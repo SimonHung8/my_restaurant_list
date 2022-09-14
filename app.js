@@ -1,8 +1,19 @@
 // require packages used in the project
 const express = require('express')
+const mongoose = require('mongoose')
 
 const app = express()
 const port = 3000
+
+// connect MongoDB via mongoose
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('MongoDB connection error')
+})
+db.once('open', () => {
+  console.log('MongoDB connected!')
+})
 
 // routes setting
 app.get('/', (req, res) => {
