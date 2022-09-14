@@ -1,3 +1,4 @@
+// require mongoose and construct schema
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -31,4 +32,5 @@ const restaurantSchema = new Schema ({
   },
 })
 
+// export Restaurant model
 module.exports = mongoose.model('Restaurant', restaurantSchema)
