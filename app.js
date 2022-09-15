@@ -34,7 +34,38 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  Restaurant.find()
+    .lean()
+    .then(restaurants => {
+      const filteredRestaurants = restaurants.filter(restaurant => {
+        return trimmed(restaurant.name).includes(trimmed(keyword)) ||
+          trimmed(restaurant.category).includes(trimmed(keyword))
+      })
+      const cannotFind = filteredRestaurants.length ? false : true
+      const resultRestaurants = filteredRestaurants.length ? filteredRestaurants : getRandomRestaurants(restaurants, 3)
+      res.render('index', { restaurants: resultRestaurants, keyword, cannotFind })
+    })
+    .catch(err => console.log(err))
+})
+
 // start and listen on the server
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
 })
+
+// function
+function trimmed(str) {
+  return str.replace(/\s*/g, "").toLowerCase()
+}
+
+function getRandomRestaurants(restaurantArray, quantity) {
+  if (restaurantArray.length < quantity) return
+  const randomRestaurants = []
+  for (let i = 0; i < quantity; i++) {
+    const randomIndex = Math.floor(Math.random() * restaurantArray.length)
+    randomRestaurants.push(restaurantArray.splice(randomIndex, randomIndex + 1)[0])
+  }
+  return randomRestaurants
+}
