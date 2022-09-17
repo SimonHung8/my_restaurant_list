@@ -21,8 +21,9 @@ db.once('open', () => {
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
 
-// setting static css file
+// setting static css file and body-parser
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 
 // routes setting
 app.get('/', (req, res) => {
@@ -47,6 +48,16 @@ app.get('/search', (req, res) => {
       const resultRestaurants = filteredRestaurants.length ? filteredRestaurants : getRandomRestaurants(restaurants, 3)
       res.render('index', { restaurants: resultRestaurants, keyword, cannotFind })
     })
+    .catch(err => console.log(err))
+})
+
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  Restaurant.create(req.body)
+    .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
 
