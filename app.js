@@ -61,6 +61,16 @@ app.post('/restaurants', (req, res) => {
     .catch(err => console.log(err))
 })
 
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id
+  Restaurant.findById(id)
+    .lean()
+    .then(restaurant => {
+      res.render('show', {restaurant})
+    })
+    .catch(err => console.log(err))
+})
+
 // start and listen on the server
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
