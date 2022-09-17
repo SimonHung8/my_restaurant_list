@@ -1,23 +1,23 @@
 <h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
 <div class="container">
   <p><span class="text-danger">*</span>為必填項目</p>
-  <form action="/restaurants" method="post">
+  <form action="/restaurants/{{restaurant._id}}/edit" method="post">
     <label for="name" class="form-label"><span class="text-danger">*</span>店名:</label>
     <div class="input-group mb-3">
       <input type="text" class="form-control" id="name" aria-describedby="basic-addon3" name="name"
-        placeholder="請輸入餐廳店名" required>
+        placeholder="請輸入餐廳店名" value="{{restaurant.name}}" required>
     </div>
 
     <label for="name_en" class="form-label"><span class="text-danger">*</span>英文店名:</label>
     <div class="input-group mb-3">
       <input type="text" class="form-control" id="name_en" aria-describedby="basic-addon3" name="name_en"
-        placeholder="請輸入餐廳英文店名" required>
+        placeholder="請輸入餐廳英文店名" value="{{restaurant.name_en}}" required>
     </div>
 
     <label for="category" class="form-label"><span class="text-danger">*</span>餐廳類別:</label>
     <div class="input-group mb-3">
-      <input list="category-option" class="form-control" id="category" aria-describedby="basic-addon3"
-        name="category" placeholder="請選擇或輸入餐廳類別" required>
+      <input list="category-option" class="form-control" id="category" aria-describedby="basic-addon3" name="category"
+        placeholder="請選擇或輸入餐廳類別" value="{{restaurant.category}}" required>
       <datalist id="category-option">
         <option>中東料理</option>
         <option>日本料理</option>
@@ -31,40 +31,39 @@
     <label for="image" class="form-label"><span class="text-danger">*</span>圖片連結:</label>
     <div class="input-group mb-3">
       <input type="url" class="form-control" id="image" aria-describedby="basic-addon3" name="image"
-        placeholder="http://" required>
+        placeholder="http://" value="{{restaurant.image}}" required>
     </div>
 
     <label for="location" class="form-label"><span class="text-danger">*</span>地址:</label>
     <div class="input-group mb-3">
       <input type="text" class="form-control" id="location" aria-describedby="basic-addon3" name="location"
-        placeholder="請輸入餐廳地址" required>
+        placeholder="請輸入餐廳地址" value="{{restaurant.location}}" required>
     </div>
 
     <label for="phone" class="form-label"><span class="text-danger">*</span>電話:</label>
     <div class="input-group mb-3">
       <input type="tel" class="form-control" id="phone" aria-describedby="basic-addon3" name="phone"
-        placeholder="請輸入餐廳電話" required>
+        placeholder="請輸入餐廳電話" value="{{restaurant.phone}}" required>
     </div>
 
     <label for="google_map" class="form-label"><span class="text-danger">*</span>Google地圖連結:</label>
     <div class="input-group mb-3">
       <input type="url" class="form-control" id="google_map" aria-describedby="basic-addon3" name="google_map"
-        placeholder="http://" required>
+        placeholder="http://" value="{{restaurant.google_map}}" required>
     </div>
 
     <label for="rating" class="form-label"><span class="text-danger">*</span>評分:</label>
     <div class="input-group mb-3">
       <input type="number" class="form-control" id="rating" aria-describedby="basic-addon3" name="rating"
-        placeholder="請輸入餐廳評分" min="0" max="5" step="0.1" required>
+        placeholder="請輸入餐廳評分" min="0" max="5" step="0.1" value="{{restaurant.rating}}" required>
     </div>
 
     <label for="description" class="form-label"><span class="text-danger">*</span>介紹:</label>
     <div class="input-group mb-3">
       <textarea class="form-control" id="description" aria-describedby="basic-addon3" name="description"
-        placeholder="請輸入餐廳介紹" rows="5" required></textarea>
+        placeholder="請輸入餐廳介紹" rows="5" required>{{restaurant.description}}</textarea>
     </div>
-    <button type="submit" class="btn btn-success mb-3">創建餐廳</button>
-    <button type="reset" class="btn btn-danger mb-3">清除輸入</button>
+    <button type="submit" class="btn btn-success mb-3">儲存</button>
     <a href="/" class="btn btn-primary mb-3">回到首頁</a>
   </form>
 </div>
