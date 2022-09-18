@@ -45,12 +45,44 @@
         <div class="card-footer d-flex justify-content-end">
           <a href="/restaurants/{{this._id}}/edit" class="card-link btn btn-success btn-sm">Edit</a>
           <a href="/restaurants/{{this._id}}" class="card-link btn btn-primary btn-sm">Detail</a>
-          <form action="" class="card-link">
-            <button class="btn btn-danger btn-sm">Delete</button>
-          </form>
+          <button type="button" class="card-link btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+            data-bs-target="#deleteModal" data-id="{{this._id}}">
+            Delete
+          </button>
         </div>
       </div>
     </div>
     {{/each}}
   </div>
 </div>
+
+{{!-- delete modal --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">確定要刪除嗎？</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- 動態調整modal連結 --}}
+<script>
+  const btnDelete = document.querySelectorAll('.btn-delete')
+  btnDelete.forEach(btn => {
+    btn.addEventListener('click', event => {
+      const id = event.target.dataset.id
+      const modalFooter = document.querySelector('.modal-footer')
+      modalFooter.innerHTML = `
+        <form action="/restaurants/${id}/delete" method="post">
+          <button type="submit" class="btn btn-danger btn-sm">刪除</button>
+        </form>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">返回</button>
+      `
+    })
+  })
+</script>

@@ -37,7 +37,29 @@
       <img class="rounded mx-auto d-block mb-4 w-100" src="{{restaurant.image}}" alt="{{restaurant.name}}"
         style="max-width: 600px;">
       <a href="/restaurants/{{restaurant._id}}/edit" class="btn btn-success mb-3">編輯</a>
+      <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal"
+        data-bs-target="#deleteModal">
+        刪除
+      </button>
       <a href="/" class="btn btn-primary mb-3">回到首頁</a>
+    </div>
+  </div>
+</div>
+
+{{!-- delete modal --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">確定要刪除嗎？</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <form action="/restaurants/{{restaurant._id}}/delete" method="post">
+          <button type="submit" class="btn btn-danger btn-sm">刪除</button>
+        </form>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">返回</button>
+      </div>
     </div>
   </div>
 </div>
