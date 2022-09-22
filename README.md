@@ -1,6 +1,6 @@
 # Restaurant List
 
-![Index page about Restaurant List](./public/images/restaurant_list_screenshot.png)
+![Index page about Restaurant List](./public/images/my_restaurant_list_screenshot.png)
 
 ## Introduction
 
