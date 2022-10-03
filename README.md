@@ -9,7 +9,7 @@ A simple restaurant list built by Node.js, Express and MongoDB
 ## Features
 
 * Users can see all restaurants' brief info on the index page
-* Users can click the restaurant to enter the show page for more detail:
+* Users can click the restaurant to enter the show page for more detail
 * Users can find specific restaurants by searching name or category
 * Users can add new restaurants
 * Users can modify restaurant info
