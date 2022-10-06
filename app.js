@@ -2,8 +2,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const Restaurant = require('./models/Restaurant')
 const methodOverride = require('method-override')
+const routes = require('./routes/index')
 
 const app = express()
 const port = 3000
@@ -26,105 +26,11 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+// setting routes
+app.use(routes)
 
-// routes setting
-app.get('/', (req, res) => {
-  const sort = req.query.sort
-  const homePage = true
-  Restaurant.find()
-    .lean()
-    .sort(sortBy(sort))
-    .then(restaurants => {
-      res.render('index', { restaurants, homePage })
-    })
-    .catch(err => console.log(err))
-})
-
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  Restaurant.find()
-    .lean()
-    .then(restaurants => {
-      const filteredRestaurants = restaurants.filter(restaurant => {
-        return trimmed(restaurant.name).includes(trimmed(keyword)) ||
-          trimmed(restaurant.category).includes(trimmed(keyword))
-      })
-      const cannotFind = filteredRestaurants.length ? false : true
-      const resultRestaurants = filteredRestaurants.length ? filteredRestaurants : getRandomRestaurants(restaurants, 3)
-      res.render('index', { restaurants: resultRestaurants, keyword, cannotFind })
-    })
-    .catch(err => console.log(err))
-})
-
-app.get('/restaurants/new', (req, res) => {
-  res.render('new')
-})
-
-app.post('/restaurants', (req, res) => {
-  Restaurant.create(req.body)
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
-
-app.get('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('show', { restaurant }))
-    .catch(err => console.log(err))
-})
-
-app.get('/restaurants/:id/edit', (req, res) => {
-  const id = req.params.id
-  Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('edit', { restaurant }))
-    .catch(err => console.log(err))
-})
-
-app.put('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  Restaurant.findByIdAndUpdate(id, req.body)
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(err => console.log(err))
-})
-
-app.delete('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  Restaurant.findByIdAndDelete(id)
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
 
 // start and listen on the server
 app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
 })
-
-// function
-function trimmed(str) {
-  return str.replace(/\s*/g, "").toLowerCase()
-}
-
-function getRandomRestaurants(restaurantArray, quantity) {
-  if (restaurantArray.length < quantity) return
-  const randomRestaurants = []
-  for (let i = 0; i < quantity; i++) {
-    const randomIndex = Math.floor(Math.random() * restaurantArray.length)
-    randomRestaurants.push(restaurantArray.splice(randomIndex, randomIndex + 1)[0])
-  }
-  return randomRestaurants
-}
-
-function sortBy(sort) {
-  switch (sort) {
-    case 'name-asc':
-      return { name: 'asc' }
-    case 'name-desc':
-      return { name: 'desc' }
-    case 'category':
-      return { category: 'asc' }
-    case 'location':
-      return { location: 'asc' }
-  }
-}
