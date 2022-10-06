@@ -1,7 +1,7 @@
 <h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
 <div class="container">
   <p><span class="text-danger">*</span>為必填項目</p>
-  <form action="/restaurants/{{restaurant._id}}/edit" method="post">
+  <form action="/restaurants/{{restaurant._id}}?_method=PUT" method="post">
     <label for="name" class="form-label"><span class="text-danger">*</span>店名:</label>
     <div class="input-group mb-3">
       <input type="text" class="form-control" id="name" aria-describedby="basic-addon3" name="name"

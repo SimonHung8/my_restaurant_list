@@ -55,7 +55,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-footer">
-        <form action="/restaurants/{{restaurant._id}}/delete" method="post">
+        <form action="/restaurants/{{restaurant._id}}?_method=DELETE" method="post">
           <button type="submit" class="btn btn-danger btn-sm">刪除</button>
         </form>
         <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">返回</button>

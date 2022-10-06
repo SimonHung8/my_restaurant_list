@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const Restaurant = require('./models/Restaurant')
+const methodOverride = require('method-override')
 
 const app = express()
 const port = 3000
@@ -21,9 +22,10 @@ db.once('open', () => {
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
 
-// setting static css file and body-parser
+// setting static css file, body-parser and method-override
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // routes setting
 app.get('/', (req, res) => {
@@ -80,17 +82,16 @@ app.get('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id', (req, res) => {
   const id = req.params.id
   Restaurant.findByIdAndUpdate(id, req.body)
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(err => console.log(err))
 })
 
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id', (req, res) => {
   const id = req.params.id
-  Restaurant.findById(id)
-    .then(restaurant => restaurant.remove())
+  Restaurant.findByIdAndDelete(id)
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
