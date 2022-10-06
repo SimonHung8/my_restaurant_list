@@ -23,6 +23,22 @@
 <!-- restaurant list -->
 <div class="container mt-5">
   <div class="row col-10 mx-auto">
+    {{#if homePage}}
+    <div class="container sort-container d-flex justify-content-end">
+      <form action="/">
+        <div class="input-group mb-3">
+          <select type="submit" name="sort" class="form-select" id="inputGroupSelect01" onchange="this.form.submit()">
+            <option>排序依據</option>
+            <option value="name-asc">A -> Z</option>
+            <option value="name-desc">Z -> A</option>
+            <option value="category">類別</option>
+            <option value="location">地區</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    {{/if}}
+
     {{#each restaurants }}
     <div class="col-12 col-sm-6 col-md-4">
       <div class="card mb-3">

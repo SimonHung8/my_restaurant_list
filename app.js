@@ -27,10 +27,13 @@ app.use(express.urlencoded({ extended: true }))
 
 // routes setting
 app.get('/', (req, res) => {
+  const sort = req.query.sort
+  const homePage = true
   Restaurant.find()
     .lean()
+    .sort(sortBy(sort))
     .then(restaurants => {
-      res.render('index', { restaurants })
+      res.render('index', { restaurants, homePage })
     })
     .catch(err => console.log(err))
 })
@@ -65,7 +68,7 @@ app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   Restaurant.findById(id)
     .lean()
-    .then(restaurant => res.render('show', {restaurant}))
+    .then(restaurant => res.render('show', { restaurant }))
     .catch(err => console.log(err))
 })
 
@@ -73,7 +76,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
   Restaurant.findById(id)
     .lean()
-    .then(restaurant => res.render('edit', {restaurant}))
+    .then(restaurant => res.render('edit', { restaurant }))
     .catch(err => console.log(err))
 })
 
@@ -110,4 +113,17 @@ function getRandomRestaurants(restaurantArray, quantity) {
     randomRestaurants.push(restaurantArray.splice(randomIndex, randomIndex + 1)[0])
   }
   return randomRestaurants
+}
+
+function sortBy(sort) {
+  switch (sort) {
+    case 'name-asc':
+      return { name: 'asc' }
+    case 'name-desc':
+      return { name: 'desc' }
+    case 'category':
+      return { category: 'asc' }
+    case 'location':
+      return { location: 'asc' }
+  }
 }
