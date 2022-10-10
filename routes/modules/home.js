@@ -13,19 +13,22 @@ router.get('/', (req, res) => {
       $or: [{ name: regKeyword }, { category: regKeyword }],
     })
       .lean()
-      .sort(sortBy(sort).order)
+      .sort(sortBy(sort))
       .then(restaurants => {
         if (!restaurants.length) {
-          Restaurant.count().exec(function (err, count) {
-            if (!count) {
-              return res.redirect('/')
-            }
-            const randomIndex = Math.floor(Math.random() * count)
-            Restaurant.findOne().skip(randomIndex).lean().exec(
-              function (err, restaurant) {
-                res.render('index', { restaurants: [restaurant], cannotFind: true, keyword })
-              })
-          })
+          Restaurant.count()
+            .then(count => {
+              if(!count) {
+                return res.redirect('/')
+              }
+              const randomIndex = Math.floor(Math.random() * count)
+              Restaurant.findOne()
+                .skip(randomIndex)
+                .lean()
+                .then(restaurant => {
+                  res.render('index', { restaurants: [restaurant], cannotFind: true, keyword })
+                })
+            })
         } else {
           return res.render('index', { restaurants, keyword })
         }
