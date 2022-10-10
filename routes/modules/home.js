@@ -2,35 +2,51 @@ const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/Restaurant')
 const sortBy = require('../../utilities/sortBy')
-const getRandomRestaurants = require('../../utilities/getRandomRestaurants')
-const trimmed = require('../../utilities/trimmed')
 
 router.get('/', (req, res) => {
   const sort = req.query.sort
-  const homePage = true
-  Restaurant.find()
-    .lean()
-    .sort(sortBy(sort))
-    .then(restaurants => {
-      res.render('index', { restaurants, homePage })
-    })
-    .catch(err => console.log(err))
-})
-
-router.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  Restaurant.find()
-    .lean()
-    .then(restaurants => {
-      const filteredRestaurants = restaurants.filter(restaurant => {
-        return trimmed(restaurant.name).includes(trimmed(keyword)) ||
-          trimmed(restaurant.category).includes(trimmed(keyword))
-      })
-      const cannotFind = filteredRestaurants.length ? false : true
-      const resultRestaurants = filteredRestaurants.length ? filteredRestaurants : getRandomRestaurants(restaurants, 3)
-      res.render('index', { restaurants: resultRestaurants, keyword, cannotFind })
+  // 有搜尋關鍵字的狀況
+  if (keyword) {
+    const regKeyword = new RegExp(keyword.trim(), 'gi')
+    return Restaurant.find({
+      $or: [{ name: regKeyword }, { category: regKeyword }],
     })
-    .catch(err => console.log(err))
+      .lean()
+      .sort(sortBy(sort).order)
+      .then(restaurants => {
+        if (!restaurants.length) {
+          Restaurant.count().exec(function (err, count) {
+            if (!count) {
+              return res.redirect('/')
+            }
+            const randomIndex = Math.floor(Math.random() * count)
+            Restaurant.findOne().skip(randomIndex).lean().exec(
+              function (err, restaurant) {
+                res.render('index', { restaurants: [restaurant], cannotFind: true, keyword })
+              })
+          })
+        } else {
+          return res.render('index', { restaurants, keyword })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        res.render('error')
+      })
+    // 沒有搜尋關鍵字的狀況
+  } else {
+    return Restaurant.find()
+      .lean()
+      .sort(sortBy(sort))
+      .then(restaurants => {
+        res.render('index', { restaurants })
+      })
+      .catch(err => {
+        console.log(err)
+        res.render('error')
+      })
+  }
 })
 
 module.exports = router

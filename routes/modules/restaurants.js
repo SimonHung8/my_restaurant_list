@@ -17,7 +17,10 @@ router.get('/:id', (req, res) => {
   Restaurant.findById(id)
     .lean()
     .then(restaurant => res.render('show', { restaurant }))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error')
+    })
 })
 
 router.get('/:id/edit', (req, res) => {
@@ -25,21 +28,30 @@ router.get('/:id/edit', (req, res) => {
   Restaurant.findById(id)
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error')
+    })
 })
 
 router.put('/:id', (req, res) => {
   const id = req.params.id
   Restaurant.findByIdAndUpdate(id, req.body)
     .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error')
+    })
 })
 
 router.delete('/:id', (req, res) => {
   const id = req.params.id
   Restaurant.findByIdAndDelete(id)
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error')
+    })
 })
 
 module.exports = router

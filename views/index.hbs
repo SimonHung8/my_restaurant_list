@@ -2,32 +2,15 @@
 <div class="container search-bar">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/search">
+      <form action="/">
         <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
+        <div class="input-group mb-3">
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
             value="{{keyword}}" aria-describedby="search-button">
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- can't find restaurant message -->
-{{#if cannotFind}}
-<h1 class="text-center mt-5">找不到符合${{keyword}}的餐廳，試試這些餐廳吧！</h1>
-{{/if}}
-
-<!-- restaurant list -->
-<div class="container mt-5">
-  <div class="row col-10 mx-auto">
-    {{#if homePage}}
-    <div class="container sort-container d-flex justify-content-end">
-      <form action="/">
-        <div class="input-group mb-3">
-          <select type="submit" name="sort" class="form-select" id="inputGroupSelect01" onchange="this.form.submit()">
+          <select type="submit" name="sort" class="select-control ms-2 rounded"onchange="this.form.submit()">
             <option>排序依據</option>
             <option value="name-asc">A -> Z</option>
             <option value="name-desc">Z -> A</option>
@@ -37,8 +20,16 @@
         </div>
       </form>
     </div>
-    {{/if}}
+  </div>
+</div>
+<!-- can't find restaurant message -->
+{{#if cannotFind}}
+<h1 class="text-center mt-5">找不到符合${{keyword}}的餐廳，試試這家餐廳吧！</h1>
+{{/if}}
 
+<!-- restaurant list -->
+<div class="container mt-5">
+  <div class="row col-10 mx-auto">
     {{#each restaurants }}
     <div class="col-12 col-sm-6 col-md-4">
       <div class="card mb-3">
@@ -50,11 +41,12 @@
             <div class="restaurant-category mb-1">
               <i class="fa-solid fa-utensils"></i> {{this.category}}
             </div>
-
+            {{#if this.rating}}
             <span class="badge bg-danger font-weight-normal">
               {{this.rating}}
               <i class="fa-solid fa-star"></i>
             </span>
+            {{/if}}
 
           </div>
         </a>
