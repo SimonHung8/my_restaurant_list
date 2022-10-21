@@ -1,4 +1,11 @@
 <div class="container">
   <h2 class="text-center m-3">操作失敗...</h2>
-  <h4 class="text-center">資料庫好像出問題了！ 快去檢查一下吧！</h3>
+  {{#if invalid}}
+  <h4 class="text-center">請輸入有效店名、餐廳類別、圖片連結以及地址</h4>
+  {{else}}
+  <h4 class="text-center">資料庫好像出問題了！ 快去檢查一下吧！</h4>
+  {{/if}}
+  <div class="text-center mt-5">
+    <button class="btn btn-outline-primary" onclick="history.back()">上一頁</button>
+  </div>
 </div>
