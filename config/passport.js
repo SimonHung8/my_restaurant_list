@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const bcrypt = require('bcryptjs')
 
 const User = require('../models/User')
 
@@ -12,18 +13,21 @@ module.exports = app => {
   passport.use(new LocalStrategy(
     { usernameField: 'email', passReqToCallback: true },
     (req, email, password, done) => {
-      User.findOne({email})
+      User.findOne({ email })
         .then(user => {
-          if(!user) {
+          if (!user) {
             return done(null, false, req.flash('warning_msg', '未註冊的email'))
           }
-          if(password !== user.password) {
-            return done(null, false, req.flash('warning_msg', '帳號或密碼錯誤'))
-          }
-          return done(null, user)
+          return bcrypt.compare(password, user.password)
+            .then(isMatch => {
+              if (!isMatch) {
+                return done(null, false, req.flash('warning_msg', '帳號或密碼錯誤'))
+              }
+              return done(null, user)
+            })
         })
         .catch(err => {
-          console.log(err)
+          done(err)
           res.render('error')
         })
     }))
