@@ -15,10 +15,10 @@ module.exports = app => {
       User.findOne({email})
         .then(user => {
           if(!user) {
-            return done(null, false)
+            return done(null, false, req.flash('warning_msg', '未註冊的email'))
           }
           if(password !== user.password) {
-            return done(null, false)
+            return done(null, false, req.flash('warning_msg', '帳號或密碼錯誤'))
           }
           return done(null, user)
         })

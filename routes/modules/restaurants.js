@@ -8,14 +8,20 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/',
-  body('name').isLength({ min: 1 }),
-  body('category').isLength({ min: 1 }),
   body('image').isURL(),
-  body('location').isLength({ min: 1 }),
   (req, res) => {
     const errors = validationResult(req)
+    const errorMsg = []
+    const {name, category, location} = req.body
+    if(!name || !category || !location) {
+      errorMsg.push({message: '請填寫所有必填欄位'})
+    }
     if (!errors.isEmpty()) {
-      return res.render('error', { invalidRestaurant: true })
+      errorMsg.push({message: '請輸入有效圖片連結'})
+    }
+    if(errorMsg.length) {
+      req.body.errorMsg = errorMsg
+      return res.render('new', req.body)
     }
     req.body.userID = req.user._id
     Restaurant.create(req.body)
@@ -43,7 +49,7 @@ router.get('/:id/edit', (req, res) => {
   const userID = req.user._id
   Restaurant.findOne({_id, userID})
     .lean()
-    .then(restaurant => res.render('edit', { restaurant }))
+    .then(restaurant => res.render('edit',  restaurant ))
     .catch(err => {
       console.log(err)
       res.render('error')
@@ -51,15 +57,26 @@ router.get('/:id/edit', (req, res) => {
 })
 
 router.put('/:id',
-  body('name').isLength({ min: 1 }),
-  body('category').isLength({ min: 1 }),
   body('image').isURL(),
-  body('location').isLength({ min: 1 }),
   (req, res) => {
     const errors = validationResult(req)
+    const errorMsg = []
+    const { name, category, location } = req.body
     if (!errors.isEmpty()) {
       return res.render('error', { invalid: true })
     }
+    if (!name || !category || !location) {
+      errorMsg.push({ message: '請填寫所有必填欄位' })
+    }
+    if (!errors.isEmpty()) {
+      errorMsg.push({ message: '請輸入有效圖片連結' })
+    }
+    if (errorMsg.length) {
+      req.body.errorMsg = errorMsg
+      req.body._id = req.params.id
+      return res.render('edit', req.body)
+    }
+
     const _id = req.params.id
     const userID = req.user._id
     Restaurant.findOneAndUpdate({_id, userID}, req.body)

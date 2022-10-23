@@ -1,21 +1,22 @@
 <h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
 <div class="container">
+  {{> message}}
   <p><span class="text-danger">*</span>為必填項目</p>
   <form action="/restaurants" method="post" class="row g-3 needs-validation" novalidate>
     <div class="col-md-10">
       <label for="name" class="form-label"><span class="text-danger">*</span>店名:</label>
-      <input type="text" class="form-control" id="name" name="name" placeholder="請輸入餐廳店名" required>
+      <input type="text" class="form-control" id="name" name="name" placeholder="請輸入餐廳店名" value="{{name}}" required>
       <div class="invalid-feedback">
         請輸入餐廳店名
       </div>
     </div>
     <div class="col-md-10">
       <label for="name_en" class="form-label">英文店名:</label>
-      <input type="text" class="form-control" id="name_en" name="name_en" placeholder="請輸入餐廳英文店名">
+      <input type="text" class="form-control" id="name_en" name="name_en" placeholder="請輸入餐廳英文店名" value="{{name_en}}">
     </div>
     <div class="col-md-10">
       <label for="category" class="form-label"><span class="text-danger">*</span>餐廳類別:</label>
-      <input list="category-option" class="form-control" id="category" name="category" placeholder="請選擇或輸入餐廳類別" required>
+      <input list="category-option" class="form-control" id="category" name="category" placeholder="請選擇或輸入餐廳類別" value="{{category}}" required>
       <datalist id="category-option">
         <option>中東料理</option>
         <option>日本料理</option>
@@ -30,42 +31,42 @@
     </div>
     <div class="col-md-10">
       <label for="image" class="form-label"><span class="text-danger">*</span>圖片連結:</label>
-      <input type="url" class="form-control" id="image" name="image" placeholder="http://" required>
+      <input type="url" class="form-control" id="image" name="image" placeholder="http://" value="{{image}}" required>
       <div class="invalid-feedback">
         請輸入圖片網址
       </div>
     </div>
     <div class="col-md-10">
       <label for="location" class="form-label"><span class="text-danger">*</span>地址:</label>
-      <input type="text" class="form-control" id="location" name="location" placeholder="請輸入餐廳地址" required>
+      <input type="text" class="form-control" id="location" name="location" placeholder="請輸入餐廳地址" value="{{location}}" required>
       <div class="invalid-feedback">
         請輸入餐廳地址
       </div>
     </div>
     <div class="col-md-10">
       <label for="phone" class="form-label">電話:</label>
-      <input type="tel" class="form-control" id="phone" name="phone" placeholder="請輸入餐廳電話">
+      <input type="tel" class="form-control" id="phone" name="phone" placeholder="請輸入餐廳電話" value="{{phone}}">
       <div class="invalid-feedback">
         請輸入有效電話
       </div>
     </div>
     <div class="col-md-10">
       <label for="google_map" class="form-label">Google地圖連結:</label>
-      <input type="url" class="form-control" id="google_map" name="google_map" placeholder="http://">
+      <input type="url" class="form-control" id="google_map" name="google_map" placeholder="http://" value="{{google_map}}">
       <div class="invalid-feedback">
         請輸入有效網址
       </div>
     </div>
     <div class="col-md-10">
       <label for="rating" class="form-label">評分:(0~5)</label>
-      <input type="number" class="form-control" id="rating" name="rating" placeholder="請輸入餐廳評分" min="0" max="5" step="0.1">
+      <input type="number" class="form-control" id="rating" name="rating" placeholder="請輸入餐廳評分" min="0" max="5" step="0.1" value="{{rating}}">
         <div class="invalid-feedback">
           請輸入有效評分
         </div>
     </div>
     <div class="col-md-10">
       <label for="description" class="form-label">介紹:</label>
-      <textarea class="form-control" id="description" name="description" placeholder="請輸入餐廳介紹" rows="5"></textarea>
+      <textarea class="form-control" id="description" name="description" placeholder="請輸入餐廳介紹" rows="5">{{description}}</textarea>
     </div>
 
 
