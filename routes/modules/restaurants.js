@@ -15,7 +15,7 @@ router.post('/',
   (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.render('error', { invalid: true })
+      return res.render('error', { invalidRestaurant: true })
     }
     Restaurant.create(req.body)
       .then(() => res.redirect('/'))
