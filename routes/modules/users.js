@@ -2,6 +2,7 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 const User = require('../../models/User')
 
 router.get('/login', (req, res) => {
@@ -41,8 +42,11 @@ router.post('/register',
           errorMsg.push({message: '已註冊過的使用者'})
           return res.render('register', { errorMsg, name, email, password, confirmPassword })
         }
-        User.create({ name, email, password, confirmPassword })
-          .then(res.redirect('/'))
+        return bcrypt
+          .genSalt(5)
+          .then(salt => bcrypt.hash(password, salt))
+          .then(hash => User.create({name, email, password: hash}))
+          .then(() => res.redirect('/'))
           .catch(err => {
             console.log(err)
             res.render('error')
