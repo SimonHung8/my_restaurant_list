@@ -30,6 +30,12 @@ const restaurantSchema = new Schema ({
   description: {
     type: String
   },
+  userID: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
+  }
 })
 
 // export Restaurant model

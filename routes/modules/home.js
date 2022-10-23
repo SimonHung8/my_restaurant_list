@@ -4,30 +4,37 @@ const Restaurant = require('../../models/Restaurant')
 const sortBy = require('../../utilities/sortBy')
 
 router.get('/', (req, res) => {
-  const sort = req.query.sort
-  const keyword = req.query.keyword
+  const {sort, keyword} = req.query
+  const userID = req.user._id
   // 有搜尋關鍵字的狀況
   if (keyword) {
     const regKeyword = new RegExp(keyword.trim(), 'gi')
     return Restaurant.find({
-      $or: [{ name: regKeyword }, { category: regKeyword }],
+      $and: [
+        {userID},
+        {$or: [{ name: regKeyword }, { category: regKeyword }]}
+      ]
     })
       .lean()
       .sort(sortBy(sort))
       .then(restaurants => {
         if (!restaurants.length) {
-          Restaurant.count()
+          Restaurant.countDocuments({userID})
             .then(count => {
               if(!count) {
                 return res.redirect('/')
               }
               const randomIndex = Math.floor(Math.random() * count)
               Restaurant.findOne()
-                .skip(randomIndex)
-                .lean()
-                .then(restaurant => {
-                  res.render('index', { restaurants: [restaurant], cannotFind: true, keyword })
-                })
+              .skip(randomIndex)
+              .lean()
+              .then( restaurant => {
+                res.render('index', {restaurants: [restaurant], cannotFind: true, keyword})
+              })
+              .catch(err => {
+                console.log(err)
+                res.render('error')
+              })
             })
         } else {
           return res.render('index', { restaurants, keyword })
@@ -39,7 +46,7 @@ router.get('/', (req, res) => {
       })
     // 沒有搜尋關鍵字的狀況
   } else {
-    return Restaurant.find()
+    return Restaurant.find({userID})
       .lean()
       .sort(sortBy(sort))
       .then(restaurants => {
