@@ -10,6 +10,8 @@ const port = 3000
 
 // connect MongoDB via mongoose
 require('./config/mongoose')
+// require passport setting
+const usePassport = require('./config/passport')
 
 // setting template engine
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: 'hbs' }))
@@ -26,6 +28,8 @@ app.use(session({
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+// setting passport
+usePassport(app)
 // setting routes
 app.use(routes)
 
