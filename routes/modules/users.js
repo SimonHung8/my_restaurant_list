@@ -21,18 +21,18 @@ router.post('/register',
   body('email').isEmail(),
   body('password').isLength({ min: 1 }),
   (req, res) => {
-    const {name, email, password, confirmPassword} = req.body
+    const { name, email, password, confirmPassword } = req.body
     const errors = validationResult(req)
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
       return res.render('error', { invalidUser: true })
     }
-    User.findOne({email})
+    User.findOne({ email })
       .then(user => {
-        if(user) {
+        if (user) {
           console.log('user already exist')
-          return res.render('register', {name, email, password, confirmPassword})
+          return res.render('register', { name, email, password, confirmPassword })
         }
-        User.create({name, email, password, confirmPassword})
+        User.create({ name, email, password, confirmPassword })
           .then(res.redirect('/'))
           .catch(err => {
             console.log(err)
@@ -44,5 +44,10 @@ router.post('/register',
         res.render('error')
       })
   })
+router.get('/logout', (req, res) => {
+  req.logOut(() => {
+    res.redirect('/users/login')
+  })
+})
 
 module.exports = router
