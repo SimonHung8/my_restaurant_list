@@ -1,14 +1,35 @@
 // require mongoose, Restaurant model, and seed data 
+const bcrypt = require('bcryptjs')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const db = require('../../config/mongoose')
 const Restaurant = require('../Restaurant')
-const restaurantList = require('./restaurants')
+const User = require('../User')
+const restaurantList = require('./restaurants').results
+const userList = require('./user').results
 
 db.once('open', () => {
-  console.log('MongoDB connected! constructing seed data...')
-  Restaurant.insertMany(restaurantList.results)
+  Promise.all(userList.map(data => {
+    return User.create({
+      name: data.name,
+      email: data.email,
+      password: bcrypt.hashSync(data.password, 5)
+    })
+      .then(user => {
+        const restaurants = []
+        restaurantList.forEach(restaurant => {
+          if (data.id * 3 >= restaurant.id && (data.id - 1) * 3 < restaurant.id) {
+            restaurant.userID = user._id
+            restaurants.push(restaurant)
+          }
+        })
+        return Restaurant.insertMany(restaurants)
+      })
+  }))
     .then(() => {
       console.log('seed data constructed!')
-      db.close()
+      process.exit()
     })
     .catch(err => console.log(err))
 })

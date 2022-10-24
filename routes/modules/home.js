@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
                 return res.redirect('/')
               }
               const randomIndex = Math.floor(Math.random() * count)
-              Restaurant.findOne()
+              Restaurant.findOne({userID})
               .skip(randomIndex)
               .lean()
               .then( restaurant => {
