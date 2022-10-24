@@ -4,6 +4,9 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const routes = require('./routes/index')
 
 const app = express()
@@ -20,7 +23,7 @@ app.set('view engine', 'hbs')
 
 // setting session
 app.use(session({
-  secret: 'secretString',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
