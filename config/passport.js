@@ -27,10 +27,7 @@ module.exports = app => {
               return done(null, user)
             })
         })
-        .catch(err => {
-          done(err)
-          res.render('error')
-        })
+        .catch(err => done(err))
     }))
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_ID,
@@ -49,10 +46,7 @@ module.exports = app => {
             .then(salt => bcrypt.hash(randomPassword, salt))
             .then(hash => User.create({ name, email, password: hash }))
             .then(user => done(null, user))
-            .catch(err => {
-              done(err)
-              res.render('error')
-            })
+            .catch(err => done(err))
         })
     }
   ))
@@ -64,9 +58,6 @@ module.exports = app => {
     User.findById(id)
       .lean()
       .then(user => done(null, user))
-      .catch(err => {
-        done(err)
-        res.render('error')
-      })
+      .catch(err => done(err))
   })
 }
