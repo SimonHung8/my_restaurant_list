@@ -26,6 +26,7 @@ db.once('open', () => {
         })
         return Restaurant.insertMany(restaurants)
       })
+      .catch(err => console.log(err))
   }))
     .then(() => {
       console.log('seed data constructed!')

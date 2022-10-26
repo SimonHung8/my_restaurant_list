@@ -36,6 +36,10 @@ router.get('/', (req, res) => {
                 res.render('error')
               })
             })
+            .catch(err => {
+              console.log(err)
+              res.render('error')
+            })
         } else {
           return res.render('index', { restaurants, keyword })
         }
