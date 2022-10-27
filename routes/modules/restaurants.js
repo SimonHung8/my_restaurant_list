@@ -62,9 +62,6 @@ router.put('/:id',
     const errors = validationResult(req)
     const errorMsg = []
     const { name, category, location } = req.body
-    if (!errors.isEmpty()) {
-      return res.render('error', { invalid: true })
-    }
     if (!name || !category || !location) {
       errorMsg.push({ message: '請填寫所有必填欄位' })
     }
