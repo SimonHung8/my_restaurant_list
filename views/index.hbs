@@ -29,7 +29,7 @@
 
 <!-- restaurant list -->
 <div class="container mt-5">
-  <div class="row col-10 mx-auto">
+  <div class="row col-10 mx-auto restaurants-wrapper">
     {{#each restaurants }}
     <div class="col-12 col-sm-6 col-md-4">
       <div class="card mb-3">
@@ -80,17 +80,16 @@
 
 {{!-- 動態調整modal連結 --}}
 <script>
-  const btnDelete = document.querySelectorAll('.btn-delete')
-  btnDelete.forEach(btn => {
-    btn.addEventListener('click', event => {
-      const id = event.target.dataset.id
-      const modalFooter = document.querySelector('.modal-footer')
-      modalFooter.innerHTML = `
+  const restaurantsWrapper = document.querySelector('.restaurants-wrapper')
+  restaurantsWrapper.addEventListener('click', event => {
+      if (event.target.classList.contains('btn-delete')) {
+        const id = event.target.dataset.id
+        const modalFooter = document.querySelector('.modal-footer')
+        modalFooter.innerHTML = `
         <form action="/restaurants/${id}?_method=DELETE" method="post">
           <button type="submit" class="btn btn-danger btn-sm">刪除</button>
         </form>
         <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">返回</button>
-      `
+    `}
     })
-  })
 </script>
