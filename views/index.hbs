@@ -11,11 +11,11 @@
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
           <select type="submit" name="sort" class="select-control ms-2 rounded"onchange="this.form.submit()">
-            <option>排序依據</option>
-            <option value="name-asc">A -> Z</option>
-            <option value="name-desc">Z -> A</option>
-            <option value="category">類別</option>
-            <option value="location">地區</option>
+            <option selected disabled>排序依據</option>
+            <option value="name-asc" {{isSelected sort 'name-asc'}}>A -> Z</option>
+            <option value="name-desc" {{isSelected sort 'name-desc'}}>Z -> A</option>
+            <option value="category" {{isSelected sort 'category'}}>類別</option>
+            <option value="location" {{isSelected sort 'location'}}>地區</option>
           </select>
         </div>
       </form>

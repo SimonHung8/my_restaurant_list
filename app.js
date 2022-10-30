@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const routes = require('./routes/index')
+const isSelected = require('./utilities/isSelected')
 
 const app = express()
 const port = 3000
@@ -18,7 +19,11 @@ require('./config/mongoose')
 const usePassport = require('./config/passport')
 
 // setting template engine
-app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: 'hbs' }))
+app.engine('hbs', exphbs.engine({
+  defaultLayout: 'main',
+  extname: 'hbs',
+  helpers: { isSelected }
+}))
 app.set('view engine', 'hbs')
 
 // setting session
