@@ -26,7 +26,9 @@ Please install Node.js and npm before starting; make sure you already have a Mon
    npm install
    ```
 
-3. Once installed, create a **.env** file in project folder to set environment variables. You can find example in **.env.example**. Don't forget to change to your own connection string.
+3. Once installed, create a **.env** file in project folder to set environment variables. You can find example in **.env.example**.
+   * **FACEBOOK_ID** and **FACEBOOK_SECRET** should be your Ｍeta App ID and App secret. Create your app in [Meta for Developers](https://developers.facebook.com/?locale=zh_TW)
+   * **MONGODB_URI** should be your MongoDB connection string.
 
 4. To create seed data, use this command.
 
